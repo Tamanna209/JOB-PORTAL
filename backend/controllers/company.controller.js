@@ -36,7 +36,7 @@ export const registerCompany = async(req, res)=>{
 }
 
 
-//company get
+//get alll companies
 
 export const getCompany= async(req, res)=>{
     try {
