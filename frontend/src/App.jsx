@@ -1,12 +1,28 @@
 import React from 'react'
-import { Button } from "@/components/ui/button"
+import Navbar from './components/shared/Navbar'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Login from './components/Auth/Login'
+import Signup from './components/Auth/Signup'
+import Home from './components/Home'
 
+const appRouter= createBrowserRouter([
+  {
+    path:'/',
+    element:<Home/>
+  },
+  {
+    path:'/login',
+    element:<Login/>
+  },
+  {
+    path:'/signup',
+    element:<Signup/>
+  }
+])
 function App() {
   return (
     <div>
-      <h1 className='text-4xl text-red-600'>Vite react project with tailwind and shadcn</h1>
-      <Button variant="default">Button</Button>
-
+      <RouterProvider router= {appRouter}/>
     </div>
   )
 }

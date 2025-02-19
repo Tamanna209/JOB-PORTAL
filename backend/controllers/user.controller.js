@@ -8,7 +8,7 @@ export const register= async(req, res)=>{
 
        if(!fullName || !email || !phoneNumber || !password || !role){
         return res.status(400).json({
-            msg:'Something is missing, please fill all the fields',
+            mesaage:'Something is missing, please fill all the fields',
             success:false
         });
        }
@@ -16,8 +16,8 @@ export const register= async(req, res)=>{
        const user = await User.findOne({email});
        if(user){
         return res.status(400).json({
-            msg:'User already exist with this mail',
-            success:false
+            message:'User already exist with this mail',
+            success:false,
         })
        };
     
@@ -30,9 +30,9 @@ export const register= async(req, res)=>{
         password:hashPassword,
         role,
      })
-     res.json(201).json({
-        msg:'Account Created Successfully',
-        success:true
+     res.status(201).json({
+        message:'Account Created Successfully',
+        success:true,
      })
     }catch(err){
     console.log(err);
@@ -47,7 +47,7 @@ export const login= async(req, res)=>{
 
     if(!email || !password || !role){
         res.status(400).send({
-            msg:"Fill all the fields",
+            message:"Fill all the fields",
             success:false
         })
     }
@@ -55,7 +55,7 @@ export const login= async(req, res)=>{
 
     if(!user){
         return res.status(400).json({
-            msg:"Incorrect email or password",
+            message:"Incorrect email or password",
             success:false
         })
     }
@@ -63,7 +63,7 @@ export const login= async(req, res)=>{
 
     if(!isPasswordMatch){
         return res.status(400).json({
-            msg:"Incorrect email or password",
+            mesaage:"Incorrect email or password",
             success:false
         })
     }
@@ -71,7 +71,7 @@ export const login= async(req, res)=>{
     //check role is correct or not 
     if(role !== user.role){
         return res.status(400).json({
-            msg:"Account doen't exist with this current role that you entered",
+            mesaage:"Account doen't exist with this current role that you entered",
             success:false
         })
     };
@@ -89,7 +89,7 @@ export const login= async(req, res)=>{
     profile:user.profile
   }
    return res.status(200).cookie("token",token , {maxAge: 1*24*60*60*1000, httpOnly:true , sameSite:'strict'}).json({
-    msg:`Welcome Back ${user.fullName}`,
+    message:`Welcome ${user.fullName} !`,
     user,
     success:true
    })
@@ -106,7 +106,7 @@ export const login= async(req, res)=>{
 export const logout = async(req, res)=>{
   try{
     return res.status(200).cookie("token", "", {maxAge:0}).json({
-        msg:'Logged out Succefully',
+        mesaage:'Logged out Succefully',
         success:true
     })
   }catch(err){
@@ -137,7 +137,7 @@ let skillsArray;
 
       if(!user){
         return res.status(400).json({
-            msg:'User not found',
+            mesaage:'User not found',
             success:false
         })
       };
@@ -177,7 +177,7 @@ let skillsArray;
       }
 
       return res.status(200).json({
-        msg:'Profile updated Successfully',
+        mesaage:'Profile updated Successfully',
         user,
         success:true
       })
