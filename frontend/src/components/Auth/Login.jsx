@@ -8,6 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/Constant";
 import { toast } from "sonner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   
@@ -15,8 +18,13 @@ const Signup = () => {
   email:'',
   password:'',
   role:''
- }])
+ }]);
+
+const {loading}=useSelector(store => store.auth);
 const navigate=useNavigate();
+const dispatch=useDispatch();
+
+
  const changeEventHandler= (e)=>{
   setInput({...input, [e.target.name]:e.target.value})
  }
@@ -24,8 +32,9 @@ const navigate=useNavigate();
  const submitHandler=async(e)=>{
   e.preventDefault();
   console.log(input);
-  
+
   try {
+    dispatch(setLoading(true));
      const res=await axios.post(`${USER_API_END_POINT}/login`, input, {
       headers:{
         "Content-Type":"application/json"
@@ -43,6 +52,8 @@ const navigate=useNavigate();
       } else {
         toast.error("An unexpected error occurred");
       }
+  }finally{
+    dispatch(setLoading(false));
   }
  }
   return (
@@ -77,7 +88,11 @@ const navigate=useNavigate();
             </RadioGroup>
           
           </div>
-          <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
+
+          {
+            loading ?  <Button className='w-full my-4'><Loader2 className="mr-2 h-4 w-4 animate-spin">Please wait</Loader2></Button> :           <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
+          }
+
           <span className="text-sm">Don't have an Account ? <Link to='/signup' className='text-blue-600'>Signup</Link></span>
         </form>
       </div>
